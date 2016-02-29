@@ -2,9 +2,8 @@
 
 REM Command file for Sphinx documentation
 
-if "%SPHINXBUILD%" == "" (
-	set SPHINXBUILD=sphinx-build
-)
+	set SPHINXBUILD=python -m sphinx.__init__
+
 set BUILDDIR=build
 set ALLSPHINXOPTS=-d %BUILDDIR%/doctrees %SPHINXOPTS% source
 set I18NSPHINXOPTS=%SPHINXOPTS% source
@@ -49,14 +48,14 @@ if "%1" == "clean" (
 
 
 REM Check if sphinx-build is available and fallback to Python version if any
-%SPHINXBUILD% 2> nul
+%SPHINXBUILD% --version 2> nul
 if errorlevel 9009 goto sphinx_python
 goto sphinx_ok
 
 :sphinx_python
 
 set SPHINXBUILD=python -m sphinx.__init__
-%SPHINXBUILD% 2> nul
+%SPHINXBUILD% --version 2> nul
 if errorlevel 9009 (
 	echo.
 	echo.The 'sphinx-build' command was not found. Make sure you have Sphinx
@@ -127,9 +126,9 @@ if "%1" == "qthelp" (
 	echo.
 	echo.Build finished; now you can run "qcollectiongenerator" with the ^
 .qhcp project file in %BUILDDIR%/qthelp, like this:
-	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\HSFTechnicalNotes.qhcp
+	echo.^> qcollectiongenerator %BUILDDIR%\qthelp\ARGUSDocumentation.qhcp
 	echo.To view the help file:
-	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\HSFTechnicalNotes.ghc
+	echo.^> assistant -collectionFile %BUILDDIR%\qthelp\ARGUSDocumentation.ghc
 	goto end
 )
 
