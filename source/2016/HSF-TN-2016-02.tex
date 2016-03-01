@@ -1,0 +1,478 @@
+\documentclass[12pt,a4paper]{article}
+
+% Variables that controls behaviour
+\usepackage{ifthen} % for conditional statements
+\newboolean{pdflatex}
+\setboolean{pdflatex}{true} % False for eps figures 
+
+\newboolean{inbibliography}
+\setboolean{inbibliography}{false} %True once you enter the bibliography
+
+
+\textheight=230mm
+\textwidth=160mm
+\oddsidemargin=7mm
+\evensidemargin=-10mm
+\topmargin=-10mm
+\headsep=20mm
+\columnsep=5mm
+\addtolength{\belowcaptionskip}{0.5em}
+
+\renewcommand{\textfraction}{0.01}
+\renewcommand{\floatpagefraction}{0.99}
+\renewcommand{\topfraction}{0.9}
+\renewcommand{\bottomfraction}{0.9}
+
+\setlength{\hoffset}{-2cm}
+\setlength{\voffset}{-2cm}
+
+% Page defaults ...
+\topmargin=0.5cm
+\oddsidemargin=2.5cm
+\textwidth=16cm
+\textheight=22cm
+
+% Don't chase after perfection
+\raggedbottom
+\sloppy
+
+\usepackage{microtype}
+\usepackage{lineno}    % Line numbering during drafting
+\usepackage{xspace}    % Avoid problems with missing or double spaces after predefined symbold
+\usepackage{caption}   % These three command get the figure and table captions automatically small
+\renewcommand{\captionfont}{\small}
+\renewcommand{\captionlabelfont}{\small}
+
+%% Graphics
+\usepackage{graphicx}  % to include figures (can also use other packages)
+\usepackage{color}
+\usepackage{colortbl}
+
+%% Math
+\usepackage{amsmath} % Adds a large collection of math symbols
+\usepackage{amssymb}
+\usepackage{amsfonts}
+\usepackage{upgreek} % Adds in support for greek letters in roman typeset
+
+%% fix to allow peaceful coexistence of line numbering and
+%% mathematical objects
+%% http://www.latex-community.org/forum/viewtopic.php?f=5&t=163
+%%
+\newcommand*\patchAmsMathEnvironmentForLineno[1]{%
+\expandafter\let\csname old#1\expandafter\endcsname\csname #1\endcsname
+\expandafter\let\csname oldend#1\expandafter\endcsname\csname
+end#1\endcsname
+ \renewenvironment{#1}%
+   {\linenomath\csname old#1\endcsname}%
+   {\csname oldend#1\endcsname\endlinenomath}%
+}
+\newcommand*\patchBothAmsMathEnvironmentsForLineno[1]{%
+  \patchAmsMathEnvironmentForLineno{#1}%
+  \patchAmsMathEnvironmentForLineno{#1*}%
+}
+\AtBeginDocument{%
+\patchBothAmsMathEnvironmentsForLineno{equation}%
+\patchBothAmsMathEnvironmentsForLineno{align}%
+\patchBothAmsMathEnvironmentsForLineno{flalign}%
+\patchBothAmsMathEnvironmentsForLineno{alignat}%
+\patchBothAmsMathEnvironmentsForLineno{gather}%
+\patchBothAmsMathEnvironmentsForLineno{multline}%
+\patchBothAmsMathEnvironmentsForLineno{eqnarray}%
+}
+
+% Get hyperlinks to captions and in references.
+% These do not work with revtex. Use "hypertext" as class option instead.
+\usepackage{hyperref}    % Hyperlinks in references
+\usepackage[all]{hypcap} % Internal hyperlinks to floats.
+
+% Make this the last packages you include before the \begin{document}
+\usepackage{cite} % Allows for ranges in citations
+\usepackage{mciteplus}
+
+\usepackage{longtable} % only for template
+
+\begin{document}
+
+\renewcommand{\thefootnote}{\fnsymbol{footnote}}
+\setcounter{footnote}{1}
+
+\begin{titlepage}
+\pagenumbering{roman}
+
+
+\vspace*{-1.5cm}
+\centerline{\large THE HEP SOFTWARE FOUNDATION (HSF)}
+\vspace*{1.5cm}
+\noindent
+\begin{tabular*}{\linewidth}{lc@{\extracolsep{\fill}}r@{\extracolsep{0pt}}}
+
+\\
+ & & HSF-TN-2016-02 \\  % ID 
+ & & February 4, 2016 \\
+% & & \today \\ % Date - Can also hardwire e.g.: 23 March 2010
+ & & \\
+% not in paper \hline
+\end{tabular*}
+
+\vspace*{4.0cm}
+
+% Title --------------------------------------------------
+{\bf\boldmath\huge
+\begin{center}
+  Machine/Job Features
+\end{center}
+}
+
+\vspace*{2.0cm}
+
+% Authors -------------------------------------------------
+\begin{center}
+M.~Alef$^1$,
+T.~Cass$^2$,
+J.J.~Keijser$^3$,
+A.~McNab$^4$,
+S.~Roiser$^2$,
+U.~Schwickerath$^2$,
+I.~Sfiligoi$^5$
+\bigskip\\
+{\it\footnotesize
+$ ^1$Karlsruhe Institute of Technology \\
+$ ^2$CERN \\
+$ ^3$NIKHEF \\
+$ ^4$University of Manchester \\
+$ ^5$Fermi National Accelerator Laboratory \\
+}
+\end{center}
+
+\vspace{\fill}
+
+% Abstract -----------------------------------------------
+\begin{abstract}
+  \noindent
+
+Within the HEPiX virtualization group and the 
+WLCG MJF Task Force, a mechanism 
+has been developed which provides
+access to detailed information about the current host and the current job to
+the job itself. This allows user
+payloads to access meta information, independent of the current batch
+system or virtual machine model. This
+information includes the performance of the node and the
+remaining run time for the current job.
+
+\end{abstract}
+
+\vspace*{2.0cm}
+
+\vspace{\fill}
+
+{\footnotesize 
+\centerline{\copyright~Named authors on behalf of the HSF, licence \href{http://creativecommons.org/licenses/by/4.0/}{CC-BY-4.0}.}}
+\vspace*{2mm}
+
+\end{titlepage}
+
+% empty page may follow the title page in long documents
+%\newpage
+%\setcounter{page}{2}
+%\mbox{~}
+
+\cleardoublepage
+
+\renewcommand{\thefootnote}{\arabic{footnote}}
+\setcounter{footnote}{0}
+
+%%%% Uncomment next 2 lines if desired
+%\tableofcontents
+%\cleardoublepage
+
+\pagestyle{plain} % restore page numbers for the main text
+\setcounter{page}{1}
+\pagenumbering{arabic}
+
+%% Uncomment during drafting and review.
+%% Comment before a final submission.
+%\linenumbers
+
+\section{Introduction}
+\label{sec:Introduction}
+
+Within the HEPiX virtualization group\cite{HEPIXMJF} and the 
+WLCG MJF Task Force\cite{WLCGMJF}, a mechanism 
+has been developed which provides
+access to detailed information about the current host and the current job to
+the job itself. This allows user
+payloads to access meta information, independent of the current batch
+system or virtual machine model. 
+
+The proposed schema is made to be extensible so that 
+additional information can be added. The purpose of this note is to define the
+specifications and use case of this schema. It should be seen as the source
+of information for the actual implementation of the scripts required by the
+sites to provide it.
+
+\section{Aims}
+\label{sec:Aims}
+
+\begin{itemize}
+\item The proposed schema must be unique and leave no room for interpretation of the values provided.
+      For this reason, basic information is used which is well defined across sites.
+\item Host and job information can be both static (like the HS06\cite{HEPIXHS06} rating of the 
+      hardware) and dynamic (eg shutdown time may be set at any time by the site.)
+\item Job specific files will be readable and possibly owned by the user and
+      residing on a /tmp like area
+\item The implementation, that is the creation of the files and their contents, can
+      be highly site specific. A sample implementation can be done per batch
+      system in use, but it is understood that sites are allowed to change the
+      implementation, provided that the created numbers match the definitions
+      given in this note.
+\end{itemize}
+
+\section{Use cases}
+\label{sec:Use cases}
+
+The use cases considered in developing the protocols included:
+
+\begin{enumerate}
+\item The job needs to calculate the remaining time it is allowed to run.
+\item The job needs to know how long it was already running.
+\item The job wants to know the performance of the processors allocated to it in order to calculate the remaining time it will need to complete (for CPU intensive jobs).
+\item A host needs to be drained, and the payload needs to be informed of the planned shutdown time.
+\item A multiprocessor user job on a non-exclusive node needs to know how many threads or processes it is allowed to start. This
+      especially useful in a late-binding scenario where the pilot reserved the processors and the user payload needs to discover this.
+\item A user job wants to know how many processors are allocated to the current job.
+\item A user job wants to know the maximum amount of scratch disk it is allowed to use.
+\item A user job wants to set up memory limits to protect itself from being killed by the batch system automatically.
+\end{enumerate}
+
+\section{Definitions}
+\label{sec:Definitions}
+
+On VM-based systems, references to ``jobs'' are to be interpreted
+as ``virtual machines'' and ``machines'' as ``hypervisors''.
+
+When jobs are running within virtual machines, the entity that provides 
+the system level configuration or contextualization of the VM acts
+as the resource provider referred to in the rest of this note.
+
+\section{Environment variables}
+\label{sec:EnvironmentVariables}
+
+For each job, two environment variables may be set, with the names
+\$MACHINEFEATURES and \$JOBFEATURES.
+
+These environment variables are the base interface for the user payload.
+Their values must be provided for the job by the resource provider. 
+
+In the
+case of virtual machines on IaaS cloud platforms, the virtual machine
+may discover the values to set for the environment variables from 
+``machinefeatures'' and ``jobfeatures'' metadata keys provided by resource
+provider via the cloud
+infrastructure. These metadata keys should only be accessed once in the
+lifetime of each virtual machine. Alternatively, the values to set may
+be supplied as part of the contextualization of the virtual machines.
+
+\section{Directories}
+\label{sec:Directories}
+
+The environment variables point to directories created by the resource
+provider. Inside, the file name is the key, the contents are the values, so
+that files can be referred to with expressions like
+\$MACHINEFEATURES/shutdowntime . The directory name should not include the
+trailing slash. These directories are either local directories in the
+filesystem or sections of the URL space on an HTTP(S) server. The user
+positively determines whether the files are to be opened locally or over
+HTTP(S) by checking for a leading slash or the prefix http:// or https://
+respectively. Typically this can achieved using library functions which can
+transparently handle local files and remote URLs when opening files. 
+
+Unlike metadata keys, the key/value files may be
+accessed multiple times to check for changes in value or in the
+absence of caching by the user. An HTTP(S) server may provide HTTP cache
+control and expiration information which the user may use to reduce the
+number of queries.
+All files in the directories must be readable by both the user and the
+resource provider services, and have file names which only consist of
+lowercase letters, numbers, and underscores.
+
+\section{\$MACHINEFEATURES}
+\label{sec:MACHINEFEATURES}
+
+Host-specific key/value pairs which are all:
+
+\begin{itemize}
+\item Found in the directory pointed to by \$MACHINEFEATURES
+\item Readable by the user who is executing the original job. In the case
+      of pilots this would be the pilot user at the site.
+\item Required unless the resource provider cannot determine their value.
+\item Static unless otherwise stated.
+\end{itemize}
+
+\begin{description}
+
+\item[total\_cpu] Number of processors which may be allocated to
+jobs. Typically the number of processors seen by the operating system on one
+worker node (that is the number of ``processor :'' lines in /proc/cpuinfo on
+Linux), but potentially set to more or less than this for performance
+reasons. (Use case 3.)
+
+\item[hs06] Total HS06 rating of the full machine in its current
+setup. HS06 is measured following the HEPiX recommendations\cite{HEPIXHS06}, with 
+HS06 benchmarks run in parallel, one for each processor which may be 
+allocated to jobs. (Use case 3.)
+
+\item[shutdowntime] Shutdown time for the machine as a UNIX time stamp 
+in seconds. The value is dynamic and optional. If the file is missing, 
+no shutdown is foreseen.  (Use case 4.)
+
+\item[grace\_secs] If the resource provider announces a
+shutdown time to the jobs on this host, that time will not be less than 
+grace\_secs seconds after the moment the shutdown time is set. This 
+allows jobs to begin packages of work knowing that there will be sufficient 
+time for them to be completed even if a shutdown time is announced. 
+This value is required if a shutdown time will be set or changed
+which will affect any jobs which have already started on this host.
+
+\end{description}
+
+\section{\$JOBFEATURES}
+\label{sec:JOBFEATURES}
+
+Job specific key/value pairs which are all:
+
+\begin{itemize}
+\item Found in the directory pointed to by \$JOBFEATURES
+\item Readable and possibly owned by the user who is executing the original
+      job. In the case of pilots this would be the pilot user at the site.
+\item Required unless the resource provider cannot determine their value.
+\item Created before the job starts and static unless otherwise stated, or 
+      unless the batch system has a recognised way of changing the
+      parameters of the job in a way the job is guaranteed to be aware
+      of. For example, if there is a mechanism for a job to
+      release processors, then the resource provider may update
+      allocated\_cpu when this happens.
+\end{itemize}
+
+\begin{description}
+
+\item[allocated\_cpu] Number of processors allocated to the current job. 
+(Use case~5.) 
+
+\item[hs06\_job] Total HS06 rating for the processors allocated
+to this job. The job's share is calculated by the resource provider from 
+per-processor HS06 measurements made for the machine. (Use case~3.)
+
+\item[shutdowntime\_job] Dynamic value. Shutdown time as a UNIX time 
+stamp in seconds. If the file is missing no job shutdown
+is foreseen. The job needs to have finished all of its processing when
+the shutdown time has arrived. (Use case~1.)
+
+\item[grace\_secs\_job] If the resource provider announces a
+shutdowntime\_job to the job, it will not be less than grace\_secs\_job
+seconds after the moment the shutdown time is set. This allows jobs to
+begin packages of work knowing that there will be sufficient time for
+them to be completed even if a shutdown time is announced.
+This value is static and required if a shutdown time will be set or changed
+after the job has started.
+
+\item[jobstart\_secs] UNIX time stamp in seconds of the time when the job 
+started on the worker node. For a pilot job scenario, this is when the 
+batch system started the pilot job, not when the user payload started to 
+run. (Use case~2.)
+
+\item[job\_id] A string of printable non-whitespace ASCII characters
+used by the resource provider to
+identify the job at the site. In batch environments, this should simply be
+the job ID. In virtualized environments, job\_id will typically contain the
+UUID of the VM.
+
+\item[wall\_limit\_secs] Elapsed time limit in seconds, starting from
+jobstart\_secs. This is not scaled up for multiprocessor jobs.
+(Use case~1.)
+
+\item[cpu\_limit\_secs] CPU time limit in seconds. For multiprocessor jobs
+this is the total for all processes started by the job. (Use case~1.)
+
+\item[max\_rss\_bytes] Resident memory usage limit, if any, in bytes
+for all processes started by this job. (Use case~8.) 
+
+\item[max\_swap\_bytes] Swap limit, if any, in bytes for all processes
+started by this job. (Use case~8) 
+
+\item[scratch\_limit\_bytes] Scratch space limit if any. If no quotas
+are used on a shared system, this corresponds to the full scratch 
+space available to all jobs which run on the host. User jobs from
+EGI-registered VOs expect the ``max size of scratch space used by jobs''
+value on their VO ID Card\cite{VOIDCARD} to be available to each job in the worst case.
+If there is a recognised procedure for informing the job of the location
+of the scratch space (eg EGI's \$TMPDIR policy\cite{EGITMPDIR}), then this value refers to that
+space. (Use case~7.) 
+
+\end{description}
+
+\clearpage
+
+\section{Summary}
+\label{sec:Summary}
+
+This note describes how the \$MACHINEFEATURES and \$JOBFEATURES variables
+may be set and used by jobs to obtain meta information from resource
+providers in a uniform way across different batch and virtual machine
+systems.
+\vspace{0.5cm}
+
+The following key/value pairs have been defined:
+
+\begin{center}
+\begin{tabular}{|l|l|p{5cm}}
+\hline
+\$MACHINEFEATURES & \$JOBFEATURES \\
+\hline
+total\_cpu & allocated\_cpu \\
+hs06 & hs06\_job \\
+shutdowntime & shutdowntime\_job \\
+grace\_secs & grace\_secs\_job \\
+ & jobstart\_secs \\
+ & job\_id \\
+ & wall\_limit\_secs \\
+ & cpu\_limit\_secs \\
+ & max\_rss\_bytes \\
+ & max\_swap\_bytes \\
+ & scratch\_limit\_bytes \\
+\hline
+\end{tabular}
+\end{center}
+
+
+%\section*{Acknowledgments}
+
+%\section*{References}
+
+\begin{thebibliography}{9}
+% Use references in the format expected by JPCS (as used for CHEP proceedings)
+
+\bibitem{HEPIXMJF} T. Cass, ``Environmental Information on WN'', Grid
+Deployment Board, CERN, 13 June 2012, retrieved from
+https://indico.cern.ch/event/155069/
+
+\bibitem{WLCGMJF} ``Machine / Job Features Task Force'', \\
+ https://twiki.cern.ch/twiki/bin/view/LCG/MachineJobFeatures
+
+\bibitem{HEPIXHS06} ``HEP-SPEC06 Benchmark'', https://w3.hepix.org/benchmarks/
+
+\bibitem{VOIDCARD} ``The VO ID Card system'', http://operations-portal.egi.eu/vo/help
+
+\bibitem{EGITMPDIR} P. Solagna, ``EGI policy for the TMPDIR environment variable usage'',
+ EGI Document 1119, retrieved from https://documents.egi.eu/public/ShowDocument?docid=1119
+
+%\bibitem{SHOULD-MUST} S. Bradner, RFC2119 ``Key words for use in RFCs to Indicate Requirement Levels'' (Internet Engineering Task Force)
+
+%\bibitem{IETF-RFC} S. Bradner, RFC2026 ``The Internet Standards Process -- Revision 3'' (Internet Engineering Task Force)
+
+\end{thebibliography}
+
+
+%\addcontentsline{toc}{section}{References}
+
+\end{document}

@@ -6,13 +6,15 @@
 Welcome to HSF Technical Notes's documentation!
 ===============================================
 
+This site is experimental. For real technical notes, look at http://hepsoftwarefoundation.org.
+
 Contents:
 
 .. toctree::
    :maxdepth: 2
    :glob:
 
-   *
+   2016/index
 
 Indices and tables
 ==================

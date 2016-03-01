@@ -10,6 +10,7 @@ lc@r@
 ****
 
 Software Licence AgreementsHSF Policy Guidelines
+************************************************
 
 | M. Jouvin\ :math:`^1` J. Harvey\ :math:`^2` A. McNab\ :math:`^3`
   E. Sexton-Kennedy\ :math:`^4` T. Wenaus\ :math:`^5`
